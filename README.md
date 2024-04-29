@@ -1,16 +1,10 @@
 # mobile_transfert_app
+ voici les commandes a executer pour l'OTP
+ npm install-g firebase-tools
 
-A new Flutter project.
+ //vu que c'est un script les pc par defaut ne permettent pas cela so tu executeras la fonction 
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+//ensuite 
+firebase login
+flutterfire configure //tu valideras les plateformes surlesquels que tu veux que l'otp fonctionne
