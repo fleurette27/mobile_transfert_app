@@ -12,7 +12,8 @@ class User {
       this.email,
       this.token,
       this.dateNaissance,
-      this.phoneNumber});
+      this.phoneNumber
+      });
 
   // function to convert json data to user model
   factory User.fromJson(Map<String, dynamic> json) {

@@ -5,10 +5,7 @@ const List cardOperations = [
     "icon" : Icons.arrow_forward,
     "title" : "Debit"
   },
-  // {
-  //   "icon" :Icons.wallet,
-  //   "title" : "Transfert"
-  // },
+  
   {
     "icon" : Icons.arrow_back,
     "title" : "Credit"

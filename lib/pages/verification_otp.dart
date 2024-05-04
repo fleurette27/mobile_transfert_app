@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 // import 'package:mobile_transfert_app/pages/home.dart';
 import 'package:mobile_transfert_app/pages/login_screen.dart';
+import 'package:mobile_transfert_app/theme/color.dart';
 import 'package:pinput/pinput.dart';
 import 'package:mobile_transfert_app/pages/function.dart';
 
@@ -87,6 +88,19 @@ class _VerificationOtpState extends State<VerificationOtp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Navigator.pop(context); // Action de retour
+          },
+        ),
+        title: const Text(
+          "Verification",
+          style: TextStyle(color: white, fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: primary,
+      ),
       // ignore: deprecated_member_use
       body: WillPopScope(
         onWillPop: () async {
@@ -103,21 +117,21 @@ class _VerificationOtpState extends State<VerificationOtp> {
                   width: 150, // Définir la largeur de l'image
                   height: 150, // Assurer un ajustement correct de l'image
                 ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Verification",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.green,
-                  ),
-                ),
+                // const SizedBox(height: 10),
+                // const Text(
+                //   "Verification",
+                //   textAlign: TextAlign.center,
+                //   style: TextStyle(
+                //     fontSize: 30,
+                //     color: Colors.green,
+                //   ),
+                // ),
                 const SizedBox(height: 10),
                 const Text(
                   "Verifier vos messages pour valider",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 24,
                     color: Colors.green,
                   ),
                 ),
@@ -145,8 +159,7 @@ class _VerificationOtpState extends State<VerificationOtp> {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                        vertical: 15),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
                         backgroundColor: Colors.green, // Arrière-plan vert
                         minimumSize:
                             const Size(100, 0), // Largeur minimale du bouton

@@ -77,212 +77,213 @@ class _RegScreenState extends State<RegScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Form(
-            key: formkey,
-            child: ListView(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      height: double.infinity,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          Color.fromARGB(255, 58, 184, 23),
-                          Color.fromARGB(255, 124, 194, 58),
-                        ]),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 60.0, left: 22),
-                        child: Text(
-                          'Créer un compte',
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 150.0),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40),
-                          ),
-                          color: Colors.white,
-                        ),
-                        height: double.infinity,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 18.0, right: 18),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextFormField(
-                                controller: nameController,
-                                validator: (val) => val != nameController.text
-                                    ? 'Le champ nom est requis'
-                                    : null,
-                                decoration: const InputDecoration(
-                                  suffixIcon: Icon(
-                                    Icons.check,
-                                    color: Colors.grey,
-                                  ),
-                                  labelText: 'Nom complet',
-                                  labelStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 58, 184, 23),
-                                  ),
-                                ),
-                              ),
-                              TextFormField(
-                                controller: emailController,
-                                validator: (val) => val != emailController.text
-                                    ? 'Le champs Email est requis'
-                                    : null,
-                                decoration: const InputDecoration(
-                                  suffixIcon: Icon(
-                                    Icons.check,
-                                    color: Colors.grey,
-                                  ),
-                                  labelText: 'Email',
-                                  labelStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 58, 184, 23),
-                                  ),
-                                ),
-                              ),
-                              TextFormField(
-                                controller: passwordController,
-                                obscureText: true,
-                                validator: (val) => val !=
-                                        passwordController.text
-                                    ? 'Le mot de passe est requis et comporte minimun 8 caractere'
-                                    : null,
-                                decoration: const InputDecoration(
-                                  suffixIcon: Icon(
-                                    Icons.visibility_off,
-                                    color: Colors.grey,
-                                  ),
-                                  labelText: 'Mot de passe',
-                                  labelStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 58, 184, 23),
-                                  ),
-                                ),
-                              ),
-                              TextFormField(
-                                controller: confirmPasswordController,
-                                obscureText: true,
-                                validator: (val) =>
-                                    val != confirmPasswordController.text
-                                        ? 'Ce champs est requis '
-                                        : null,
-                                decoration: const InputDecoration(
-                                  suffixIcon: Icon(
-                                    Icons.visibility_off,
-                                    color: Colors.grey,
-                                  ),
-                                  labelText: 'Confirmer le mot de passe',
-                                  labelStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 58, 184, 23),
-                                  ),
-                                ),
-                              ),
-                              IntlPhoneField(
-                                controller: phoneNumberController,
-                                initialCountryCode: "BJ",
-                                onChanged: (value) {
-                                  setState(() {
-                                    phoneNumber = value.completeNumber;
-                                  });
-                                },
-                                decoration: const InputDecoration(
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color:
-                                          Colors.grey, // Couleur de la bordure
-                                      width: 1, // Épaisseur de la bordure
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15),
-                                      backgroundColor: Colors.green,
-                                      minimumSize: const Size(100, 0),
-                                    ),
-                                    onPressed: () {
-                                      //Action lorsque le bouton est pressé
-                                      if (formkey.currentState!.validate()) {
-                                        setState(() {
-                                          loading = !loading;
-                                          verif();
-                                          registerUser();
-                                        });
-                                      }
-                                    },
-                                    child: loading
-                                        ? const CircularProgressIndicator(
-                                            valueColor: AlwaysStoppedAnimation(
-                                                Colors.white),
-                                          )
-                                        : const Text(
-                                            'S\'inscrire',
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white),
-                                          ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Text.rich(
-                                textAlign: TextAlign.center, // Centrer le texte
-                                TextSpan(
-                                  text: "Vous avez déjà un compte ? ",
-                                  style: const TextStyle(
-                                      fontSize: 16, color: Colors.black),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Connectez-vous',
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.green,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const LoginScreen(),
-                                            ),
-                                          );
-                                        },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Navigator.pop(context); // Action de retour
+          },
+        ),
+      ),
+      body: SingleChildScrollView(
+          child: Form(
+        key: formkey,
+        child: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  Color.fromARGB(255, 58, 184, 23),
+                  Color.fromARGB(255, 124, 194, 58),
+                ]),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.only(top: 60.0, left: 22),
+                child: Text(
+                  'Créer un compte',
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ],
-            )));
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 150.0),
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
+                  color: Colors.white,
+                ),
+                // height:00,
+                // width: 200,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18.0, right: 18),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        controller: nameController,
+                        validator: (val) => val != nameController.text
+                            ? 'Le champ nom est requis'
+                            : null,
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(
+                            Icons.check,
+                            color: Colors.grey,
+                          ),
+                          labelText: 'Nom complet',
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 58, 184, 23),
+                          ),
+                        ),
+                      ),
+                      TextFormField(
+                        controller: emailController,
+                        validator: (val) => val != emailController.text
+                            ? 'Le champs Email est requis'
+                            : null,
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(
+                            Icons.check,
+                            color: Colors.grey,
+                          ),
+                          labelText: 'Email',
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 58, 184, 23),
+                          ),
+                        ),
+                      ),
+                      TextFormField(
+                        controller: passwordController,
+                        obscureText: true,
+                        validator: (val) => val != passwordController.text
+                            ? 'Le mot de passe est requis et comporte minimun 8 caractere'
+                            : null,
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(
+                            Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                          labelText: 'Mot de passe',
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 58, 184, 23),
+                          ),
+                        ),
+                      ),
+                      TextFormField(
+                        controller: confirmPasswordController,
+                        obscureText: true,
+                        validator: (val) =>
+                            val != confirmPasswordController.text
+                                ? 'Ce champs est requis '
+                                : null,
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(
+                            Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                          labelText: 'Confirmer le mot de passe',
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 58, 184, 23),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      IntlPhoneField(
+                        controller: phoneNumberController,
+                        initialCountryCode: "BJ",
+                        onChanged: (value) {
+                          setState(() {
+                            phoneNumber = value.completeNumber;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          border: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey, // Couleur de la bordure
+                              width: 1, // Épaisseur de la bordure
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              backgroundColor: Colors.green,
+                              minimumSize: const Size(100, 0),
+                            ),
+                            onPressed: () {
+                              //Action lorsque le bouton est pressé
+                              if (formkey.currentState!.validate()) {
+                                setState(() {
+                                  loading = !loading;
+                                  verif();
+                                  registerUser();
+                                });
+                              }
+                            },
+                            child: loading
+                                ? const CircularProgressIndicator(
+                                    valueColor:
+                                        AlwaysStoppedAnimation(Colors.white),
+                                  )
+                                : const Text(
+                                    'S\'inscrire',
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text.rich(
+                        textAlign: TextAlign.center, // Centrer le texte
+                        TextSpan(
+                          text: "Vous avez déjà un compte ? ",
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.black),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Connectez-vous',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.green,
+                                decoration: TextDecoration.underline,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginScreen(),
+                                    ),
+                                  );
+                                },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      )),
+    );
   }
 }

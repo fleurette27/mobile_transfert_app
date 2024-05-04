@@ -8,12 +8,13 @@ void authWithPhoneNumber(String phone,
     required Function(String value) autoRetrieval}) async {
   _auth.verifyPhoneNumber(
     phoneNumber: phone,
-    timeout: const Duration(seconds: 20),
+    timeout: const Duration(seconds: 60),
     verificationCompleted: onAutoVerify,
     verificationFailed: onFailed,
     codeSent: onCodeSend,
     codeAutoRetrievalTimeout: autoRetrieval,
   );
+  _auth.setLanguageCode("fr");
 }
 
 Future<void> validateOtp(String smsCode, String verificationId) async {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:mobile_transfert_app/pages/account_page.dart';
+import 'package:mobile_transfert_app/pages/card_page.dart';
 import 'package:mobile_transfert_app/pages/dashboard_page.dart';
 import 'package:mobile_transfert_app/theme/color.dart';
 class Home extends StatefulWidget {
@@ -38,7 +40,7 @@ class _HomeState extends State<Home> {
       children: const [
         DashbaordPage(),
         Center(
-          child: Text("Page d'accueil",style: TextStyle(
+          child: Text("Page de trans",style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold
           ),),
@@ -49,18 +51,22 @@ class _HomeState extends State<Home> {
             fontWeight: FontWeight.bold
           ),),
         ),
-        Center(
-          child: Text("Page du compte",style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold
-          ),),
-        ),
-        Center(
-          child: Text("Page des cartes",style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold
-          ),),
-        ),
+        //page du compte
+        UserAccount(),
+        // Center(
+        //   child: Text("Page du compte",style: TextStyle(
+        //     fontSize: 20,
+        //     fontWeight: FontWeight.bold
+        //   ),),
+        // ),
+        //page des cartes
+        CardPage(),
+        // Center(
+        //   child: Text("Page des cartes",style: TextStyle(
+        //     fontSize: 20,
+        //     fontWeight: FontWeight.bold
+        //   ),),
+        // ),
       ],
     );
   }

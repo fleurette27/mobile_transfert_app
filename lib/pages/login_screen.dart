@@ -7,6 +7,7 @@ import 'package:mobile_transfert_app/model/api_response.dart';
 import 'package:mobile_transfert_app/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_transfert_app/services/user_service.dart';
+import 'package:mobile_transfert_app/theme/color.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -56,185 +57,195 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
-    body: Form(
-      key: formkey,
-      child: ListView(
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    Color.fromARGB(255, 58, 184, 23),
-                    Color.fromARGB(255, 124, 194, 58),
-                  ]),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.only(top: 60.0, left: 22),
-                  child: Text(
-                    'Bon retour dans SeedPay',
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Navigator.pop(context); // Action de retour
+          },
+        ),
+        title: const Text(
+          "Connexion",
+          style: TextStyle(color:white, fontWeight: FontWeight.w600),
+        ),
+        backgroundColor:primary,
+      ),
+    body: SingleChildScrollView(
+      child: Form(
+        key: formkey,
+        child: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  Color.fromARGB(255, 58, 184, 23),
+                  Color.fromARGB(255, 124, 194, 58),
+                ]),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.only(top: 60.0, left: 22),
+                child: Text(
+                  'Bon retour dans SeedPay',
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 150.0),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                    ),
-                    color: Colors.white,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 150.0),
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
                   ),
-                  height: double.infinity,
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 18.0, right: 18),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextFormField(
-                          controller: emailController,
-                          validator: (val) => val != emailController.text
-                              ? 'Le champs Email est requis'
-                              : null,
-                          decoration: const InputDecoration(
-                            suffixIcon: Icon(
-                              Icons.check,
-                              color: Colors.grey,
-                            ),
-                            labelText: 'Email',
-                            labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 58, 184, 23),
-                            ),
+                  color: Colors.white,
+                ),
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18.0, right: 18),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        controller: emailController,
+                        validator: (val) => val != emailController.text
+                            ? 'Le champs Email est requis'
+                            : null,
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(
+                            Icons.check,
+                            color: Colors.grey,
+                          ),
+                          labelText: 'Email',
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 58, 184, 23),
                           ),
                         ),
-                        TextFormField(
-                          controller: passwordController,
-                          validator: (val) => val != passwordController.text
-                              ? 'Le mot de passe est requis et comporte minimun 8 caractere'
-                              : null,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            suffixIcon: Icon(
-                              Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
-                            labelText: 'Mot de passe',
-                            labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 58, 184, 23),
-                            ),
+                      ),
+                      TextFormField(
+                        controller: passwordController,
+                        validator: (val) => val != passwordController.text
+                            ? 'Le mot de passe est requis et comporte minimun 8 caractere'
+                            : null,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(
+                            Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                          labelText: 'Mot de passe',
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 58, 184, 23),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                backgroundColor: Colors.green,
-                                minimumSize: const Size(100, 0),
+                      ),
+                      const SizedBox(height: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 15),
+                              backgroundColor: Colors.green,
+                              minimumSize: const Size(100, 0),
+                            ),
+                            onPressed: () {
+                              //Action lorsque le bouton est pressé
+                              if (formkey.currentState!.validate()) {
+                                setState(() {
+                                  loading = true;
+                                  loginUser();
+                                });
+                              }
+                            },
+                            child: loading
+                                ? const CircularProgressIndicator(
+                                    valueColor:
+                                        AlwaysStoppedAnimation(Colors.white),
+                                  )
+                                : const Text(
+                                    'Se connecter',
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text.rich(
+                        textAlign: TextAlign.center,
+                        TextSpan(
+                          text: "Mot de passe oublié? ",
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.black),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Nouveau mot de passe',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.green,
+                                decoration: TextDecoration.underline,
                               ),
-                              onPressed: () {
-                                //Action lorsque le bouton est pressé
-                                if (formkey.currentState!.validate()) {
-                                  setState(() {
-                                    loading = true;
-                                    loginUser();
-                                  });
-                                }
-                              },
-                              child: loading
-                                  ? const CircularProgressIndicator(
-                                      valueColor:
-                                          AlwaysStoppedAnimation(Colors.white),
-                                    )
-                                  : const Text(
-                                      'Se connecter',
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgotPassword(),
                                     ),
+                                  );
+                                },
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
-                        Text.rich(
-                          textAlign: TextAlign.center,
-                          TextSpan(
-                            text: "Mot de passe oublié? ",
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'Nouveau mot de passe',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.green,
-                                  decoration: TextDecoration.underline,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ForgotPassword(),
-                                      ),
-                                    );
-                                  },
+                      ),
+                      const SizedBox(height: 20),
+                      Text.rich(
+                        textAlign: TextAlign.center,
+                        TextSpan(
+                          text: "Vous n'avez pas de compte ? ",
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.black),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Créez un compte',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.green,
+                                decoration: TextDecoration.underline,
                               ),
-                            ],
-                          ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const RegScreen(),
+                                    ),
+                                  );
+                                },
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 20),
-                        Text.rich(
-                          textAlign: TextAlign.center,
-                          TextSpan(
-                            text: "Vous n'avez pas de compte ? ",
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'Créez un compte',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.green,
-                                  decoration: TextDecoration.underline,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const RegScreen(),
-                                      ),
-                                    );
-                                  },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
-    ));
+    ),
+    );
   }
 }

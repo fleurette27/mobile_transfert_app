@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:mobile_transfert_app/theme/color.dart';
 
@@ -15,13 +14,13 @@ const List cardLists = [
     "currency": "€",
     "card_number": "2267 9312 **** 9836",
     "valid_date": "02/26",
-    "bg_color": Color(0xFFe2b04b)
+    "bg_color": blue
   },
   {
     "amount": "32 543.76",
     "currency": "£",
     "card_number": "2267 9312 **** 9836",
     "valid_date": "01/30",
-    "bg_color": Color(0xFF161616)
+    "bg_color": red
   }
 ];

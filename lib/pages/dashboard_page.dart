@@ -1,7 +1,16 @@
-import 'package:mobile_transfert_app/data_json/balance_json.dart';
-import 'package:mobile_transfert_app/pages/card_page.dart';
-import 'package:mobile_transfert_app/theme/color.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_transfert_app/model/api_response.dart';
+// import 'package:mobile_transfert_app/data_json/balance_json.dart';
+import 'package:mobile_transfert_app/pages/account_page.dart';
+import 'package:mobile_transfert_app/pages/card_form.dart';
+import 'package:mobile_transfert_app/pages/card_page.dart';
+import 'package:mobile_transfert_app/pages/currency_converter.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:mobile_transfert_app/pages/webview_feda.dart';
+import 'package:mobile_transfert_app/services/feda_service.dart';
+import 'package:mobile_transfert_app/theme/color.dart';
+import '../model/transaction.dart';
 
 class DashbaordPage extends StatefulWidget {
   const DashbaordPage({super.key});
@@ -11,30 +20,110 @@ class DashbaordPage extends StatefulWidget {
 }
 
 class _DashbaordPageState extends State<DashbaordPage> {
+  //action sur transferer
+   String url = '';
+
+  void fedaTransaction() async {
+    try{
+   final Map<String, dynamic> transactionInfo = await createTransaction();
+              setState(() {
+                url = transactionInfo['url'];
+              });
+
+      Navigator.push(
+        // ignore: use_build_context_synchronously
+        context,
+        MaterialPageRoute(
+            builder: (context) => WebviewFeda(
+                  url: url,
+                )),
+      );
+    } catch(e)
+
+    {
+           print('Erreur lors de la création de la transaction : $e');
+
+    }
+  }
+
   int pageIndex = 0;
+  int _current = 0;
+  final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primary,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child: getAppBar(),
+        child: AppBar(
+          elevation: 0,
+          backgroundColor: primary,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              );
+            },
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.search),
+            )
+          ],
+        ),
       ),
+      drawer: getDrawer(),
       body: getBody(),
     );
   }
 
-  Widget getAppBar() {
-    return AppBar(
-      elevation: 0,
-      backgroundColor: primary,
-      leading: IconButton(
-          onPressed: () {},
-          icon: const CircleAvatar(
-            backgroundImage: NetworkImage(
-                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cG9ydHJhaXR8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"),
-          )),
-      actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+  Widget getDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.lightGreen[900],
+            ),
+            child: const ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text('Username'),
+              subtitle: Text('Numero de compte'),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.account_circle,
+              color: primary,
+            ),
+            title: const Text('Compte'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const UserAccount()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.swap_horiz,
+              color: primary,
+            ),
+            title: const Text('Conversion de devise'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CurrencyDevise()),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -42,124 +131,101 @@ class _DashbaordPageState extends State<DashbaordPage> {
     var size = MediaQuery.of(context).size;
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          height: size.height * 0.25,
-          decoration: const BoxDecoration(color: primary),
-          child: Column(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: 110,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(balanceLists.length, (index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: SizedBox(
-                          width: size.width * 0.7,
-                          child: Column(
-                            // crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(
-                                      balanceLists[index]['currency'],
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          color: index == 0
-                                              ? white
-                                              : white.withOpacity(0.5),
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    balanceLists[index]['amount'],
-                                    style: TextStyle(
-                                        fontSize: 35,
-                                        color: index == 0
-                                            ? white
-                                            : white.withOpacity(0.5),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                balanceLists[index]['description'],
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: white.withOpacity(0.5),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
+        Expanded(
+          child: CarouselSlider(
+            items: [
+              Image.asset("images/carrousel1.jpg", fit: BoxFit.cover),
+              Image.asset("images/carrousel2.jpg", fit: BoxFit.cover),
+              Image.asset("images/carrousel3.jpg", fit: BoxFit.cover),
+            ],
+            carouselController: _controller,
+            options: CarouselOptions(
+              height: size.height * 0.25,
+              aspectRatio: 16 / 9,
+              viewportFraction: 0.9,
+              initialPage: 0,
+              enableInfiniteScroll: true,
+              reverse: false,
+              autoPlay: true,
+              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayAnimationDuration: const Duration(milliseconds: 800),
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enlargeCenterPage: true,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              },
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for (int i = 0;
+                i < 3;
+                i++) // Remplacez 3 par le nombre d'images que vous avez
+              GestureDetector(
+                onTap: () => _controller.animateToPage(i),
+                child: Container(
+                  width: 12.0,
+                  height: 12.0,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black)
+                        .withOpacity(_current == i ? 0.9 : 0.4),
                   ),
                 ),
               ),
-              Expanded(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Flexible(
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: secondary.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(12)),
-                          child: const Center(
-                            child: Text(
-                              "Recharger",
-                              style: TextStyle(
-                                  color: white, fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Flexible(
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: secondary.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(12)),
-                          child: const Center(
-                            child: Text(
-                              "Transferer",
-                              style: TextStyle(
-                                  color: white, fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                    ],
+          ],
+        ),
+        SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: secondary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                    child: Text(
+                      "Recharger",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
-              )
-            ],
+                ElevatedButton(
+                  onPressed: () {
+                    fedaTransaction();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: secondary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                    child: Text(
+                      "Transférer",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         Expanded(
@@ -167,10 +233,12 @@ class _DashbaordPageState extends State<DashbaordPage> {
             child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(
-                  color: white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25))),
+                color: white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
+                ),
+              ),
               child: getAccountSection(),
             ),
           ),
@@ -186,7 +254,7 @@ class _DashbaordPageState extends State<DashbaordPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Comptes",
+            "Transactions récentes",
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
           ),
           const SizedBox(
@@ -202,125 +270,29 @@ class _DashbaordPageState extends State<DashbaordPage> {
                   color: grey.withOpacity(0.1),
                   spreadRadius: 10,
                   blurRadius: 10,
-                  // changes position of shadow
                 ),
               ],
             ),
             child: Padding(
               padding: const EdgeInsets.all(18),
               child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: transactions.map((transaction) {
+                  return Column(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: secondary.withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(12)),
-                            child: const Center(
-                              child: Icon(
-                               Icons.wallet,
-                                color: primary,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          const Text(
-                            "40832-810-5-7000-012345",
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_down,
-                        color: primary,
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 50),
-                    child: Divider(
-                      thickness: 0.2,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                            color: secondary.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: const Center(
-                          child: Icon(
-                            Icons.attach_money,
-                            color: primary,
-                            size: 20,
-                          ),
+                      ListTile(
+                        leading: Icon(
+                          transaction.icon,
+                          color: primary,
                         ),
+                        title: Text(transaction.title),
+                        subtitle: Text(transaction.subtitle),
                       ),
-                      const SizedBox(
-                        width: 15,
+                      const Divider(
+                        thickness: 0.2,
                       ),
-                      const Text(
-                        "18 199.24 EUR",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w600),
-                      )
                     ],
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 50),
-                    child: Divider(
-                      thickness: 0.2,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                            color: secondary.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: const Center(
-                          child: Icon(
-                            Icons.monetization_on,
-                            color: primary,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Text(
-                        "36 670 000 FCFA",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w600),
-                      )
-                    ],
-                  ),
-                ],
+                  );
+                }).toList(),
               ),
             ),
           ),
@@ -338,24 +310,20 @@ class _DashbaordPageState extends State<DashbaordPage> {
                 width: 90,
                 height: 22,
                 decoration: BoxDecoration(
-                    color: secondary.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(8)),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.add,
-                      size: 16,
-                      color: primary,
-                    ),
-                    Text(
-                      "Ajouter une carte",
-                      style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: primary),
-                    )
-                  ],
+                  color: secondary.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CardForm()),
+                    );
+                  },
+                  child: const Text(
+                    "Ajouter une carte",
+                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                  ),
                 ),
               )
             ],
@@ -366,7 +334,9 @@ class _DashbaordPageState extends State<DashbaordPage> {
           GestureDetector(
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => const CardPage()));
+                context,
+                MaterialPageRoute(builder: (_) => const CardPage()),
+              );
             },
             child: Container(
               width: double.infinity,
@@ -378,7 +348,6 @@ class _DashbaordPageState extends State<DashbaordPage> {
                     color: grey.withOpacity(0.1),
                     spreadRadius: 10,
                     blurRadius: 10,
-                    // changes position of shadow
                   ),
                 ],
               ),
@@ -395,8 +364,9 @@ class _DashbaordPageState extends State<DashbaordPage> {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                  color: secondary.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(12)),
+                                color: secondary.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                               child: const Center(
                                 child: Icon(
                                   Icons.credit_card,
@@ -410,9 +380,7 @@ class _DashbaordPageState extends State<DashbaordPage> {
                             ),
                             const Text(
                               "EUR *2330",
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
+                              style: TextStyle(fontSize: 15),
                             )
                           ],
                         ),

@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+// import 'package:intl_phone_field/phone_number.dart';
 import 'package:mobile_transfert_app/pages/function.dart';
+import 'package:mobile_transfert_app/pages/reg_screen.dart';
 import 'package:mobile_transfert_app/pages/verification_otp.dart';
+import 'package:flutter/gestures.dart';
+import 'package:mobile_transfert_app/theme/color.dart';
 
 class SignInView extends StatefulWidget {
   const SignInView({super.key});
@@ -46,6 +50,7 @@ class _SignInViewState extends State<SignInView> {
       // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
     }, onFailed: (e) {
+      print(e);
       setState(() {
         loading = false;
       });
@@ -61,6 +66,19 @@ class _SignInViewState extends State<SignInView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Navigator.pop(context); // Action de retour
+          },
+        ),
+        title: const Text(
+          "Identification",
+          style: TextStyle(color: white, fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: primary,
+      ),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -71,6 +89,15 @@ class _SignInViewState extends State<SignInView> {
                 fit: BoxFit.cover,
                 width: 200, // Définir la largeur de l'image
                 height: 200, // Assurer un ajustement correct de l'image
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Identifiez vous",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.green,
+                ),
               ),
               const SizedBox(height: 20),
               IntlPhoneField(
@@ -114,6 +141,33 @@ class _SignInViewState extends State<SignInView> {
                                 fontSize: 20,
                                 color: Colors.white), // Texte blanc
                           ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text.rich(
+                    textAlign: TextAlign.center,
+                    TextSpan(
+                      text: "Vous n'avez pas de compte ? ",
+                      style: const TextStyle(fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Créez un compte',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.green,
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const RegScreen(),
+                                ),
+                              );
+                            },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
