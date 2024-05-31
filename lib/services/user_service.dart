@@ -1,5 +1,4 @@
 import 'dart:convert';
-// import 'dart:io';
 import 'package:mobile_transfert_app/model/api_response.dart';
 import 'package:mobile_transfert_app/model/user.dart';
 import 'package:http/http.dart' as http;
@@ -107,7 +106,7 @@ Future<ApiResponse> updateName(int userId, String name) async {
   try {
     String token = await getToken();
     final response =
-        await http.put(Uri.parse('updateNameURL/$userId'), headers: {
+        await http.put(Uri.parse('$updateNameURL/$userId'), headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     }, body: {
@@ -140,7 +139,7 @@ Future<ApiResponse> updateEmail(int userId, String email) async {
   try {
     String token = await getToken();
     final response =
-        await http.put(Uri.parse('updateEmailURL/$userId'), headers: {
+        await http.put(Uri.parse('$updateEmailURL/$userId'), headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     }, body: {
@@ -172,7 +171,7 @@ Future<ApiResponse> updatePhoneNumber(int userId, String phoneNumber) async {
   try {
     String token = await getToken();
     final response =
-        await http.put(Uri.parse('updatePhoneNumberURL/$userId'), headers: {
+        await http.put(Uri.parse('$updatePhoneNumberURL/$userId'), headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     }, body: {
@@ -205,7 +204,7 @@ Future<ApiResponse> updatePassword(int userId, String currentPassword,
   try {
     String token = await getToken();
     final response =
-        await http.put(Uri.parse('updatePasswordURL/$userId'), headers: {
+        await http.put(Uri.parse('$updatePasswordURL/$userId'), headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     }, body: {

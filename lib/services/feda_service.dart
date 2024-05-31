@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:convert';
 import 'package:mobile_transfert_app/model/api_response.dart';
 import 'package:mobile_transfert_app/model/transaction.dart';

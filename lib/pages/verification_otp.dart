@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // ignore: unnecessary_import
 import 'package:flutter/widgets.dart';
-// import 'package:mobile_transfert_app/pages/home.dart';
 import 'package:mobile_transfert_app/pages/login_screen.dart';
 import 'package:mobile_transfert_app/theme/color.dart';
 import 'package:pinput/pinput.dart';

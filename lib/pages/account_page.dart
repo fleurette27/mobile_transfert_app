@@ -239,10 +239,12 @@ class _UserAccountState extends State<UserAccount> {
           true, // Spécifier que la page modale est contrôlée par le scroll
       builder: (BuildContext context) {
         return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
               const Text('Modifier',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 20),
@@ -270,7 +272,7 @@ class _UserAccountState extends State<UserAccount> {
             ],
           ),
           
-            
+          ),   
           
         );
       },
@@ -417,6 +419,7 @@ class _UserAccountState extends State<UserAccount> {
       },
     );
   }
+
 
   void showEditPasswordForm() {
     TextEditingController currentPasswordController = TextEditingController();

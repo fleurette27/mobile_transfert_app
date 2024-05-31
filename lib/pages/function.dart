@@ -6,6 +6,7 @@ void authWithPhoneNumber(String phone,
     required Function(PhoneAuthCredential value) onAutoVerify,
     required Function(FirebaseAuthException value) onFailed,
     required Function(String value) autoRetrieval}) async {
+  _auth.setLanguageCode("fr");
   _auth.verifyPhoneNumber(
     phoneNumber: phone,
     timeout: const Duration(seconds: 60),
@@ -14,7 +15,6 @@ void authWithPhoneNumber(String phone,
     codeSent: onCodeSend,
     codeAutoRetrievalTimeout: autoRetrieval,
   );
-  _auth.setLanguageCode("fr");
 }
 
 Future<void> validateOtp(String smsCode, String verificationId) async {
